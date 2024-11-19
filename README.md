@@ -14,4 +14,8 @@
 ## Descritivo do Aluno:
 
 -> DESCREVA AQUI <-
- 
+Esta aplicação é um exemplo simples e eficaz de como construir um conversor de moedas usando Android
+integrando uma API externa para obter as taxas de câmbio em tempo real.
+O uso de RadioGroup, EditText, Button e TextView cria uma interface intuitiva para o usuário
+enquanto o código em Java garante a lógica de conversão e integração com a API.
+

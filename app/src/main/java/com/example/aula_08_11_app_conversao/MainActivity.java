@@ -31,29 +31,35 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+
 
         RadioGroup rg = findViewById(R.id.opcoes);
-        rg.setOnCheckedChangeListener(((radioGroup, i) -> {
+        rg.setOnCheckedChangeListener((radioGroup, i) -> {
             RadioButton rb = findViewById(i);
             switch (rb.getText().toString()) {
                 case "Real -> Dolar":
                     opcaoSelecionada = "BRL-USD";
                     break;
+                case "Real -> Euro":
+                    opcaoSelecionada = "BRL-EUR";
+                    break;
+                case "Dolar -> Euro":
+                    opcaoSelecionada = "USD-EUR";
+                    break;
+                case "Euro -> Libra":
+                    opcaoSelecionada = "EUR-GBP";
+                    break;
                 default:
                     break;
             }
-        }));
+        });
+
 
         Button bt = findViewById(R.id.converter);
         bt.setOnClickListener(view -> converter());
     }
+
 
     private void converter() {
         if (opcaoSelecionada.isEmpty()) {
@@ -78,7 +84,13 @@ public class MainActivity extends AppCompatActivity {
                     JsonObject jsonObject = JsonParser.parseString(result).getAsJsonObject();
                     if (jsonObject.has("BRLUSD")) {
                         currencyRate = gson.fromJson(jsonObject.get("BRLUSD"), CurrencyRate.class);
-                    } else {
+                    }else if (jsonObject.has("BRLEUR")) {
+                        currencyRate = gson.fromJson(jsonObject.get("BRLEUR"), CurrencyRate.class);
+                    }else if (jsonObject.has("USDEUR")) {
+                        currencyRate = gson.fromJson(jsonObject.get("USDEUR"), CurrencyRate.class);
+                    }else if (jsonObject.has("EURGBP")) {
+                        currencyRate = gson.fromJson(jsonObject.get("EURGBP"), CurrencyRate.class);
+                    }else {
                         Toast.makeText(getApplicationContext(), "Não foi possível encontrar o valor da moeda", Toast.LENGTH_SHORT).show();
                     }
 
